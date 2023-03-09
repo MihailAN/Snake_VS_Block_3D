@@ -12,12 +12,18 @@ public class Game : MonoBehaviour
     private GameObject Player;
     [SerializeField]
     private GameObject PanelLost;
+    [SerializeField]
+    private AnimatorControl animatorControlHead;
+    [SerializeField]
+    private TextMeshPro SnakeTailText;
+    [SerializeField]
+    private Transform Tail; 
+    [SerializeField]
+    private float distanceTail;
+    [Min(0)]
+    public float Volume;
 
-    public TextMeshPro SnakeTailText;    
-    public Transform Tail;
-    public float CircleDiameter;
 
-    private Player _player;
     private Transform _snakeHead;
     private List<Transform> snakeTail = new List<Transform>();
     private List<Vector3> positions = new List<Vector3>();
@@ -30,45 +36,36 @@ public class Game : MonoBehaviour
     }
     private void Start()
     {
-        _player= Player.GetComponent<Player>();
         AddTail();
         AddTail();
         AddTail();
         AddTail();
     }
-
     private void Update()
     {
-        float distance = ((Vector3)_snakeHead.position - positions[0]).magnitude;
-
-        if (distance > CircleDiameter)
+        AudioListener.volume = Volume;
+        float distance = (_snakeHead.position - positions[0]).magnitude;
+        if (distance > distanceTail)
         {
-            Vector3 direction = ((Vector3)_snakeHead.position - positions[0]).normalized;
-
-            positions.Insert(0, positions[0] + direction * CircleDiameter);
+            Vector3 direction = (_snakeHead.position - positions[0]).normalized;
+            positions.Insert(0, positions[0] + direction * distanceTail);
             positions.RemoveAt(positions.Count - 1);
-
-            distance -= CircleDiameter;
+            distance -= distanceTail;
         }
-
         for (int i = 0; i < snakeTail.Count; i++)
         {
-            snakeTail[i].position = Vector3.Lerp(positions[i + 1], positions[i], distance / CircleDiameter);
+            snakeTail[i].position = Vector3.Lerp(positions[i + 1], positions[i], distance / distanceTail);
         }
     }
-
     public void AddTail()
     {
-        Transform circle = Instantiate(Tail, positions[positions.Count - 1], 
-                                        Quaternion.identity, _snakeHead.transform);
+        Transform circle = Instantiate(Tail, positions[positions.Count - 1], Quaternion.identity, _snakeHead.transform);
         snakeTail.Add(circle);
-        positions.Add(circle.position);
+        positions.Add(circle.position);        
         TailText();
     }
-
     public void RemoveTail()
-    {
-        
+    {        
             if (snakeTail.Count > 0)
             {
                 Destroy(snakeTail[0].gameObject);
@@ -86,15 +83,13 @@ public class Game : MonoBehaviour
         int Tail= snakeTail.Count;
         SnakeTailText.text= Tail.ToString();
     }
-
     public void OnPlayerDied()
-    {
+    {        
+        animatorControlHead.lostPlaer();
         Player.GetComponent<Player>().enabled = false;
         PanelLost.SetActive(true);
-    }
-    
-
-        public void NextLevel()
+    } 
+    public void NextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
@@ -102,7 +97,7 @@ public class Game : MonoBehaviour
     {       
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    public void GoToLevel1()
+    public void GoToLevel_1()
     {
         SceneManager.LoadScene("Level 1", LoadSceneMode.Single);
     }

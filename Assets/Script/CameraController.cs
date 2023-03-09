@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform Target;
+    [SerializeField]
+    private Transform Target;
     private float _distance;
     private void Start()
     {

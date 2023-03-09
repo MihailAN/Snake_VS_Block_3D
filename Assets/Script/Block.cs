@@ -8,37 +8,38 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     [SerializeField]
-    private Game haed;
+    private Game game;
     [SerializeField]
     private Color colorMin;
     [SerializeField]
     private Color colorMax;
     [SerializeField]
-    private TextMeshPro textFood;
-    
-    public int MinBlock;
-    public int MaxBlock;
+    private TextMeshPro textFood;   
+    [SerializeField]
+    private Renderer rendererBloc;
+    [SerializeField]
+    private int minBlock;
+    [SerializeField]
+    private int maxBlock;
 
     private int _randomDameg;
     private float _smoothness = 0;
 
     void Start()
     {
-        _randomDameg = UnityEngine.Random.Range(MinBlock, MaxBlock);
+        _randomDameg = UnityEngine.Random.Range(minBlock, maxBlock);
         textFood.text = _randomDameg.ToString();
         GradientColer();
     }
-
-    private void GradientColer()
+        private void GradientColer()
     {
-        Color[] gColor = new Color[MaxBlock];
-        for (int i = 0; i < MaxBlock; i++)
+        Color[] gColor = new Color[maxBlock];
+        for (int i = 0; i < maxBlock; i++)
         {
-            _smoothness += 1f / MaxBlock;
-
+            _smoothness += 1f / maxBlock;
             gColor[i] = (Color.Lerp(colorMin, colorMax, _smoothness));
         }
-        GetComponent<Renderer>().material.color = gColor[_randomDameg];
+        rendererBloc.GetComponent<Renderer>().material.color = gColor[_randomDameg];
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -50,10 +51,9 @@ public class Block : MonoBehaviour
             if (dot < 0.5) 
             plaear.Bounce();
 
-
             _randomDameg -= 1;
             textFood.text = _randomDameg.ToString();
-            haed.RemoveTail();
+            game.RemoveTail();
             if (_randomDameg == 0)
             {
                 Destroy(gameObject);

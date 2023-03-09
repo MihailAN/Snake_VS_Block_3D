@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1bbf9ab378780b439f3efc7239fcae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 7918548117731460560, guid: ccff9d6f0a677b943bbc878152345de5, type: 3}
-  PanelLost: {fileID: 5492409258758240404, guid: 4a3c4302b67f23a488287eb3bc900938, type: 3}
+  Player: {fileID: 3700413773847641696, guid: d98c5a3b496e3124e970016e2402bdbf, type: 3}
+  PanelLost: {fileID: 0}
+  animatorControlHead: {fileID: 0}
   SnakeTailText: {fileID: 0}
-  Tail: {fileID: 8856291658778137451, guid: cc3669037ced2be4f88b13194811108d, type: 3}
-  CircleDiameter: 0.7
+  Tail: {fileID: 8856291658778137451, guid: 7f8ce8dd982e8344ba580f8104ec84db, type: 3}
+  distanceTail: 0.3
+  Volume: 0.3
